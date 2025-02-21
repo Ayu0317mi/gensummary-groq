@@ -1,4 +1,3 @@
-//app/pdf/page.tsx
 'use client'
 
 import { useState } from 'react'
@@ -10,7 +9,7 @@ import { AlertCircle } from "lucide-react"
 import { generateCVSummary } from '../actions/pdf/generate'
 import { Input } from '@/components/ui/input'
 import * as pdfjsLib from 'pdfjs-dist'  // Correct import for pdfjs-dist
-import 'pdfjs-dist/webpack';
+import 'pdfjs-dist/webpack'
 
 export default function CVSummaryGenerator() {
     const [cv, setCV] = useState('')
@@ -63,7 +62,7 @@ export default function CVSummaryGenerator() {
         setErrorMessage('')
         setSummary('')
         if (!cv.trim()) {
-            setErrorMessage("Please enter or extract your CV before generating a summary.")
+            setErrorMessage("Please upload or extract your CV before generating a summary.")
             return
         }
         setIsLoading(true)
@@ -94,21 +93,36 @@ export default function CVSummaryGenerator() {
                 <Card>
                     <CardHeader>
                         <CardTitle>CV Input</CardTitle>
-                        <CardDescription>Upload your CV (PDF) and get an AI-generated summary</CardDescription>
+                        <CardDescription>Upload your CV file (PDF) or paste your CV and get an AI-generated summary</CardDescription>
                     </CardHeader>
                     <form onSubmit={handleSubmit}>
                         <CardContent>
-                            <Input
-                                type="file"
-                                onChange={handleFileChange}
-                                accept=".pdf"
-                                className="w-full mb-4"
-                            />
+                            {/* Custom File Input */}
+                            <div className="mb-4">
+                                <Input
+                                    id="file-input"
+                                    type="file"
+                                    accept=".pdf"
+                                    onChange={handleFileChange}
+                                    className="hidden"
+                                />
+                                <label
+                                    htmlFor="file-input"
+                                    className="inline-block py-2 px-4 bg-black text-white font-normal rounded-lg cursor-pointer text-sm"
+                                >
+                                    Upload file
+                                </label>
+                                {/* Display selected file name */}
+                                {file && (
+                                    <p className="text-sm text-muted-foreground mt-2">Selected file:{file.name}</p>
+                                )}
+                            </div>
+
                             <Textarea
                                 placeholder="Paste your CV here..."
                                 value={cv}
                                 onChange={(e) => setCV(e.target.value)}
-                                rows={10}
+                                rows={5}
                                 className="w-full mb-4"
                             />
                         </CardContent>
