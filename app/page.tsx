@@ -11,6 +11,7 @@ import { Input } from '@/components/ui/input'
 import * as pdfjsLib from 'pdfjs-dist'  // Correct import for pdfjs-dist
 import 'pdfjs-dist/webpack'
 
+
 export default function CVSummaryGenerator() {
     const [cv, setCV] = useState('')
     const [summary, setSummary] = useState('')
@@ -32,22 +33,23 @@ export default function CVSummaryGenerator() {
             const fileReader = new FileReader()
             fileReader.onload = async () => {
                 const arrayBuffer = fileReader.result as ArrayBuffer
-
-                // Initialize PDF.js document from the loaded ArrayBuffer
+    
                 const pdfDoc = await pdfjsLib.getDocument(arrayBuffer).promise
                 let text = ''
                 const numPages = pdfDoc.numPages
-
-                // Iterate through all pages and extract text
+    
                 for (let i = 1; i <= numPages; i++) {
                     const page = await pdfDoc.getPage(i)
                     const content = await page.getTextContent()
-
-                    // Join all the items in the page text
-                    text += content.items.map((item: any) => item.str).join(' ') + '\n'
+    
+                    text += content.items.map((item) => {
+                        if ('str' in item) {
+                            return item.str;
+                        }
+                        return '';
+                    }).join(' ') + '\n'
                 }
-
-                // Set the extracted text to the CV state
+    
                 setCV(text)
             }
             fileReader.readAsArrayBuffer(pdfFile)
@@ -55,7 +57,7 @@ export default function CVSummaryGenerator() {
             console.error("Error extracting PDF text:", error)
             setErrorMessage("Failed to extract text from the PDF. Please try again.")
         }
-    }
+    }    
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
