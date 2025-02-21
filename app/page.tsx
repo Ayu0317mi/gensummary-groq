@@ -7,12 +7,21 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
 import { generateCVSummary } from './actions/generate'
+import { Input } from '@/components/ui/input'
 
 export default function CVSummaryGenerator() {
   const [cv, setCV] = useState('')
   const [summary, setSummary] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
+  const [file, setFile] = useState<File | null>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const uploadedFile = e.target.files?.[0];
+    if (uploadedFile) {
+      setFile(uploadedFile);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -50,7 +59,7 @@ export default function CVSummaryGenerator() {
         <Card>
           <CardHeader>
             <CardTitle>CV Input</CardTitle>
-            <CardDescription>Paste your CV and get an AI-generated summary</CardDescription>
+            <CardDescription>Upload your CV and get an AI-generated summary</CardDescription>
           </CardHeader>
           <form onSubmit={handleSubmit}>
             <CardContent>
@@ -59,6 +68,12 @@ export default function CVSummaryGenerator() {
                 value={cv}
                 onChange={(e) => setCV(e.target.value)}
                 rows={10}
+                className="w-full mb-4"
+              />
+              <Input
+                type="file"
+                onChange={handleFileChange}
+                accept=".pdf"
                 className="w-full mb-4"
               />
             </CardContent>
