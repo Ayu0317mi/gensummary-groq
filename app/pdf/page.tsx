@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { AlertCircle } from "lucide-react"
-import { generateCVSummary } from '../actions/pdf/generate'
+import { generateCVSummary } from '../actions/generate'
 import { Input } from '@/components/ui/input'
 import * as pdfjsLib from 'pdfjs-dist'  // Correct import for pdfjs-dist
 import 'pdfjs-dist/webpack'
@@ -92,7 +92,7 @@ export default function CVSummaryGenerator() {
             <div className="max-w-4xl mx-auto space-y-8">
                 <Card>
                     <CardHeader>
-                        <CardTitle>CV Input</CardTitle>
+                        <CardTitle>Demo Page</CardTitle>
                         <CardDescription>Upload your CV file (PDF) or paste your CV and get an AI-generated summary</CardDescription>
                     </CardHeader>
                     <form onSubmit={handleSubmit}>
